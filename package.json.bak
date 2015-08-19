@@ -1,0 +1,31 @@
+{
+  "name": "joi-decorators",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/jasmine/bin/jasmine.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/johndoe90/joi-decorators.git"
+  },
+  "author": "Phillip Friedrich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johndoe90/joi-decorators/issues"
+  },
+  "homepage": "https://github.com/johndoe90/joi-decorators#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.2",
+    "gulp-typescript": "^2.7.8",
+    "jasmine": "^2.3.2",
+    "joi": "^6.6.1",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.0",
+    "uuid": "^2.0.1"
+  }
+}

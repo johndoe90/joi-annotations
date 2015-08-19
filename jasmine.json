@@ -1,0 +1,6 @@
+{
+  "spec_dir": "joi-annotations",
+  "spec_files": [
+    "**/*[sS]pec.js"
+  ]
+}

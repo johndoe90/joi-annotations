@@ -1,0 +1,201 @@
+///<reference path="references.ts" />
+var Joi = require('joi');
+var Meta = require('./meta');
+var SchemaBuilder = require('./schemabuilder');
+require('reflect-metadata');
+function params() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i - 0] = arguments[_i];
+    }
+    return Array.prototype.filter.call(args, function (param) {
+        return param != null;
+    });
+}
+var original = Joi.validate;
+Joi.validate = function (value, schema, options, callback) {
+    if (typeof value == 'object' && !schema && Meta.hasMetadata(value))
+        schema = SchemaBuilder.build(value);
+    var rest = [];
+    if (options)
+        rest.push(options);
+    if (callback)
+        rest.push(callback);
+    return original.apply(void 0, [value, schema].concat(rest));
+};
+var annotations = {
+    // any
+    any: function () {
+        return Meta.addPropertyMetadata(null, null, 'any');
+    },
+    allow: function (value) {
+        return Meta.addPropertyMetadata('allow', [value]);
+    },
+    required: function () {
+        return Meta.addPropertyMetadata('required', null, null);
+    },
+    optional: function () {
+        return Meta.addPropertyMetadata('optional', null, null);
+    },
+    forbidden: function () {
+        return Meta.addPropertyMetadata('forbidden', null, null);
+    },
+    strip: function () {
+        return Meta.addPropertyMetadata('strip', null, null);
+    },
+    description: function (desc) {
+        return Meta.addPropertyMetadata('description', [desc]);
+    },
+    notes: function (notes) {
+        return Meta.addPropertyMetadata('notes', [notes]);
+    },
+    tags: function (tags) {
+        return Meta.addPropertyMetadata('tags', [tags]);
+    },
+    meta: function (meta) {
+        return Meta.addPropertyMetadata('meta', [meta]);
+    },
+    example: function (value) {
+        return Meta.addPropertyMetadata('example', [value]);
+    },
+    unit: function (name) {
+        return Meta.addPropertyMetadata('unit', [name]);
+    },
+    options: function (options) {
+        return Meta.addPropertyMetadata('options', [options]);
+    },
+    strict: function (isStrict) {
+        return Meta.addPropertyMetadata('strict', [isStrict]);
+    },
+    label: function (name) {
+        return Meta.addPropertyMetadata('label', [name]);
+    },
+    raw: function (isRaw) {
+        return Meta.addPropertyMetadata('raw', [isRaw]);
+    },
+    // array
+    array: function (target, property) {
+        Meta.addPropertyMetadata(null, null, 'array')(target, property);
+    },
+    sparse: function (enabled) {
+        return Meta.addPropertyMetadata('sparse', [enabled]);
+    },
+    single: function (enabled) {
+        return Meta.addPropertyMetadata('single', [enabled]);
+    },
+    items: function () {
+        var type = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            type[_i - 0] = arguments[_i];
+        }
+        return Meta.addPropertyMetadata('items', type.slice());
+    },
+    // min is overloaded
+    // max is overloaded
+    // length is overloaded
+    unique: function () {
+        return Meta.addPropertyMetadata('unique', null, null);
+    },
+    // boolean
+    boolean: function () {
+        return Meta.addPropertyMetadata(null, null, 'boolean');
+    },
+    // binary
+    binary: function () {
+        return Meta.addPropertyMetadata(null, null, 'binary');
+    },
+    encoding: function (encoding) {
+        return Meta.addPropertyMetadata('encoding', [encoding]);
+    },
+    // min is overloaded
+    // max is overloaded
+    // length is overloaded
+    // date
+    date: function () {
+        return Meta.addPropertyMetadata(null, null, 'date');
+    },
+    // min is overloaded
+    // max is overloaded
+    format: function (format) {
+        return Meta.addPropertyMetadata('format', [format]);
+    },
+    iso: function () {
+        return Meta.addPropertyMetadata('iso', null, null);
+    },
+    // func
+    func: function () {
+        return Meta.addPropertyMetadata(null, null, 'func');
+    },
+    // number
+    number: function () {
+        return Meta.addPropertyMetadata(null, null, 'number');
+    },
+    // min is overloaded
+    // max is overloaded
+    greater: function (limit) {
+        return Meta.addPropertyMetadata('greater', [limit]);
+    },
+    less: function (limit) {
+        return Meta.addPropertyMetadata('less', [limit]);
+    },
+    integer: function () {
+        return Meta.addPropertyMetadata('integer', null, null);
+    },
+    precision: function (limit) {
+        return Meta.addPropertyMetadata('precision', [limit]);
+    },
+    multiple: function (base) {
+        return Meta.addPropertyMetadata('multiple', [base]);
+    },
+    positive: function () {
+        return Meta.addPropertyMetadata('positive', null, null);
+    },
+    negative: function () {
+        return Meta.addPropertyMetadata('negative', null, null);
+    },
+    // string
+    string: function () {
+        return Meta.addPropertyMetadata(null, null, 'string');
+    },
+    insensitive: function () {
+        return Meta.addPropertyMetadata('insensitive', null, null);
+    },
+    min: function (value, encoding) {
+        return Meta.addPropertyMetadata('min', params(value, encoding));
+    },
+    max: function (value, encoding) {
+        return Meta.addPropertyMetadata('max', params(value, encoding));
+    },
+    creditCard: function () {
+        return Meta.addPropertyMetadata('creditCard', null, null);
+    },
+    length: function (limit, encoding) {
+        return Meta.addPropertyMetadata('length', params(limit, encoding));
+    },
+    regex: function (pattern, name) {
+        return Meta.addPropertyMetadata('regex', params(pattern, name));
+    },
+    replace: function (pattern, replacement) {
+        return Meta.addPropertyMetadata('replace', params(pattern, replacement));
+    },
+    alphanum: function () {
+        return Meta.addPropertyMetadata('alphanum', null, null);
+    },
+    token: function () {
+        return Meta.addPropertyMetadata('token', null, null);
+    },
+    email: function (options) {
+        return Meta.addPropertyMetadata('email', params(options));
+    },
+    ip: function (options) {
+        return Meta.addPropertyMetadata('ip', params(options));
+    },
+    valid: function () {
+        return Meta.addPropertyMetadata(null, null, 'subresource');
+    },
+    lowercase: function () {
+        return Meta.addPropertyMetadata('lowercase', null, null);
+    }
+};
+module.exports = annotations;
+//# sourceMappingURL=index.js.map
