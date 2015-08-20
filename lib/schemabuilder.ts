@@ -15,15 +15,22 @@ export class SchemaBuilder {
         });
     }
 
-    private static buildSchemaMap(obj: {}, meta): Joi.SchemaMap {
+    private static buildSchemaMap(meta): Joi.SchemaMap {
         let schemaMap: Joi.SchemaMap = {};
 
         let validator, propInfo;
         Object.keys(meta).forEach((propName) => {
             propInfo = meta[propName];
 
-            if ( propInfo.type === 'subresource' ) {
-                validator = SchemaBuilder.build(obj[propName]);
+            if ( propInfo.type === 'resource' ) {
+                for ( let i = 0; i < propInfo.schema.length; i++ ) {
+                    if ( propInfo.schema[i].name === 'resource' ) {
+                        validator = SchemaBuilder.build(propInfo.schema[i].parameters[0]);
+                        break;
+                    }
+                }
+
+                //validator = SchemaBuilder.build(obj[propName]);
             } else {
                 validator = propInfo.type ? Joi[propInfo.type]() : Joi;
 
@@ -42,10 +49,9 @@ export class SchemaBuilder {
         return schemaMap;
     }
 
-    private static applyPropertyMetadata(schemaMap: Joi.SchemaMap, obj: {}): Joi.SchemaMap {
+    private static applyPropertyMetadata(schemaMap: Joi.SchemaMap, prototype: {}): Joi.SchemaMap {
         let meta = [];
 
-        let prototype = Object.getPrototypeOf(obj);
         while ( prototype ) {
             if ( Meta.hasOwnPropertyMetadata(prototype) ) 
                 meta.push(Meta.getOwnPropertyMetadata(prototype) ) 
@@ -57,16 +63,15 @@ export class SchemaBuilder {
         while ( meta.length ) {
             metadata = meta.pop();
 
-            SchemaBuilder.extendSchemaMap(schemaMap, SchemaBuilder.buildSchemaMap(obj, metadata));
+            SchemaBuilder.extendSchemaMap(schemaMap, SchemaBuilder.buildSchemaMap(metadata));
         }
 
         return schemaMap;
     }
 
-    private static applyClassMetadata(schema: Joi.ObjectSchema, obj: {}): Joi.ObjectSchema {
+    private static applyClassMetadata(schema: Joi.ObjectSchema, prototype: {}): Joi.ObjectSchema {
         let meta = [];
 
-        let prototype = Object.getPrototypeOf(obj);
         while ( prototype ) {
             if ( Meta.hasOwnClassMetadata(prototype) ) 
                 meta.push(Meta.getOwnClassMetadata(prototype));
@@ -88,23 +93,23 @@ export class SchemaBuilder {
         return schema;
     }
 
-    public static build(obj): Joi.ObjectSchema {
+    public static build(prototype): Joi.ObjectSchema {
         let schema: Joi.ObjectSchema;
         let schemaMap: Joi.SchemaMap = {};
 
-        let firstMetadata = Meta.getFirstMetadata(obj);
-        let id = firstMetadata._id;
+        let firstMetadata = Meta.getFirstMetadata(prototype);
+        let id = firstMetadata ? firstMetadata._id : null;
 
         if ( id && SchemaBuilder.schemaCache.hasOwnProperty(id) ) {
             schema = SchemaBuilder.schemaCache[id];
         } else {
-            if ( Meta.hasPropertyMetadata(obj) ) 
-                schemaMap = SchemaBuilder.applyPropertyMetadata(schemaMap, obj);
+            if ( Meta.hasPropertyMetadata(prototype) ) 
+                schemaMap = SchemaBuilder.applyPropertyMetadata(schemaMap, prototype);
 
             schema = Joi.object().keys(schemaMap);
 
-            if ( Meta.hasClassMetadata(obj) ) 
-               schema = SchemaBuilder.applyClassMetadata(schema, obj);
+            if ( Meta.hasClassMetadata(prototype) ) 
+               schema = SchemaBuilder.applyClassMetadata(schema, prototype);
 
             id = uuid.v4();
             Object.defineProperty(firstMetadata, '_id', {

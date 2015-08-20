@@ -152,9 +152,11 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-    public validate() {
+    public validate(type) {
         return Meta.addMetadata({
-            type: 'subresource'
+            type: 'resource',
+            validatorName: 'resource',
+            validatorParameters: [type.prototype]
         });
     }
 }

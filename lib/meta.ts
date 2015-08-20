@@ -20,8 +20,7 @@ export class Meta {
         return Meta.hasClassMetadata(obj) || Meta.hasPropertyMetadata(obj);
     }
 
-    public static hasPropertyMetadata(obj): boolean {
-        let prototype = Object.getPrototypeOf(obj);
+    public static hasPropertyMetadata(prototype): boolean {
         while ( prototype ) {
             if ( Reflect.hasOwnMetadata(Meta.METADATA, prototype) )
                 return true;
@@ -40,8 +39,7 @@ export class Meta {
         return Reflect.getOwnMetadata(Meta.METADATA, obj);
     }
 
-    public static hasClassMetadata(obj): boolean {
-        let prototype = Object.getPrototypeOf(obj);
+    public static hasClassMetadata(prototype): boolean {
         let constructor = prototype ? prototype.constructor : null;
         while ( prototype && constructor ) {
             if ( Reflect.hasOwnMetadata(Meta.METADATA, constructor) )
@@ -65,8 +63,7 @@ export class Meta {
         return Reflect.getOwnMetadata(Meta.METADATA, constructor);
     }
 
-    public static getFirstMetadata(obj: {}): Metadata {
-        let prototype = Object.getPrototypeOf(obj);
+    public static getFirstMetadata(prototype: {}): Metadata {
         while ( prototype ) {
             if ( Meta.hasOwnPropertyMetadata(prototype) )
                 return Meta.getOwnPropertyMetadata(prototype);

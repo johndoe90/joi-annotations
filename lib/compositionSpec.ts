@@ -3,7 +3,7 @@
 import * as Joi from 'joi';
 import {annotations} from './index';
 
-@annotations.object.and('propA', 'propB')
+/*@annotations.object.and('propA', 'propB')
 class Resource {
 	@annotations.string.string()
 	public propA: string;
@@ -39,4 +39,4 @@ describe("annotation", function() {
            expect(error).not.toBeNull();
        });
     });
-});
+});*/

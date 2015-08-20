@@ -17,8 +17,12 @@ import {AlternativesAnnotations} from './alternatives';
 
 let validate = Joi.validate;
 Joi.validate = function(value, schema, options, callback) {
-    if ( typeof value == 'object' && !schema && Meta.hasMetadata(value) )
-        schema = SchemaBuilder.build(value);
+    let prototype;
+    if ( value && typeof value == 'object' && !schema )
+        prototype = Object.getPrototypeOf(value);
+
+    if ( prototype && Meta.hasMetadata(prototype) )
+        schema = SchemaBuilder.build(prototype);
 
     let rest = [];
     if ( options ) rest.push(options);
@@ -29,8 +33,12 @@ Joi.validate = function(value, schema, options, callback) {
 
 let assert = Joi.assert;
 Joi.assert = function(value, schema, message) {
-    if ( typeof value == 'object' && !schema && Meta.hasMetadata(value) ) 
-        schema = SchemaBuilder.build(value);
+    let prototype;
+    if ( value && typeof value == 'object' && !schema )
+        prototype = Object.getPrototypeOf(value);
+
+    if ( prototype && Meta.hasMetadata(prototype) ) 
+        schema = SchemaBuilder.build(prototype);
 
     let rest = [];
     if ( message ) rest.push(message);
@@ -64,6 +72,21 @@ export var annotations = {
     alt: alternatives,
     alternatives: alternatives
 };
+
+class Phone {
+}
+
+class Person {
+    @annotations.object.validate(Phone)
+    public phone: Phone;
+}
+
+var phone = new Phone();
+
+var person = new Person();
+person.phone = phone;
+
+console.log(Joi.validate(person));
 
 /*class Test {
     public test: string;
