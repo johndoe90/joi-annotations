@@ -41,9 +41,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('boolean', () => {
     beforeEach(() => {
       this.error = null;

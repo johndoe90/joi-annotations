@@ -95,9 +95,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('sparse', () => {
     beforeEach(() => {
       this.error = null;
@@ -117,9 +115,7 @@ describe('annotation', () => {
       expect(this.error).toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('single', () => {
     beforeEach(() => {
       this.error = null;
@@ -139,9 +135,7 @@ describe('annotation', () => {
       expect(this.error).toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('items', () => {
     beforeEach(() => {
       this.error = null;
@@ -161,9 +155,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('min', () => {
     beforeEach(() => {
       this.error = null;
@@ -183,9 +175,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('max', () => {
     beforeEach(() => {
       this.error = null;
@@ -205,9 +195,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('length', () => {
     beforeEach(() => {
       this.error = null;
@@ -227,9 +215,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('unique', () => {
     beforeEach(() => {
       this.error = null;

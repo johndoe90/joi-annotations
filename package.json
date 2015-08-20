@@ -1,0 +1,31 @@
+{
+  "name": "joi-annotations",
+  "version": "0.0.1",
+  "description": "ES7 annotation support for joi",
+  "main": "lib/index.js",
+  "dependencies": {
+    "reflect-metadata": "^0.1.0",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.2",
+    "gulp-typescript": "^2.7.8",
+    "jasmine": "^2.3.2",
+    "joi": "^6.6.1",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "test": "node node_modules/jasmine/bin/jasmine.js JASMINE_CONFIG_PATH=jasmine.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johndoe90/joi-annotations.git"
+  },
+  "author": "Phillip Friedrich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johndoe90/joi-annotations/issues"
+  },
+  "homepage": "https://github.com/johndoe90/joi-annotations#readme"
+}

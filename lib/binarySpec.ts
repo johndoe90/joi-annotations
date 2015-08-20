@@ -52,9 +52,7 @@ describe('annotation', () => {
       expect(Buffer.isBuffer(result.value.prop)).toBe(true);
     });
   });
-});
 
-describe('annotation', () => {
   describe('min', () => {
     beforeEach(() => {
       this.error = null;
@@ -74,9 +72,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('max', () => {
     beforeEach(() => {
       this.error = null;
@@ -96,9 +92,7 @@ describe('annotation', () => {
       expect(this.error).not.toBeNull();
     });
   });
-});
 
-describe('annotation', () => {
   describe('length', () => {
     beforeEach(() => {
       this.error = null;
