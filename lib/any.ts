@@ -35,11 +35,11 @@ export class AnyAnnotations implements IAnyAnnotations {
         });
     }
 
-	public allow(value: any) {
+	public allow(...values: any[]) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'allow',
-            validatorParameters: [value]
+            validatorParameters: [values]
         });
     }
 
@@ -151,7 +151,7 @@ export class AnyAnnotations implements IAnyAnnotations {
         });
     }
 
-    public valid(...value: (any|any[])[]) {
+    public valid(...value: any[]) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'valid',
@@ -159,15 +159,15 @@ export class AnyAnnotations implements IAnyAnnotations {
         });
     }
 
-    public only(...value: (any|any[])[]) {
+    public only(...value: any[]) {
         return this.valid(value);
     }
 
-    public equal(...value: (any|any[])[]) {
+    public equal(...value: any[]) {
         return this.valid(value);
     }
 
-    public invalid(...value: (any|any[])[]) {
+    public invalid(...value: any[]) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'invalid',
@@ -175,11 +175,11 @@ export class AnyAnnotations implements IAnyAnnotations {
         });
     }
 
-    public disallow(...value: (any|any[])[]) {
+    public disallow(...value: any[]) {
         return this.invalid(value);
     }
 
-    public not(...value: (any|any[])[]) {
+    public not(...value: any[]) {
         return this.invalid(value);
     }
 }

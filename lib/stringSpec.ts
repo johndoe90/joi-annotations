@@ -161,11 +161,12 @@ describe('annotation', () => {
     describe('insensitive', () => {
         beforeEach(() => {
             this.error = null;
-            this.test = new InsensitiveTest('a');
+            this.test = {prop: 'a'};
+            //this.test = new InsensitiveTest('a');
         });
 
         it('should allow "a"', () => {
-            this.error = Joi.validate(this.test).error;
+            this.error = Joi.validate(this.test, InsensitiveTest).error;
 
             expect(this.error).toBeNull();
         });

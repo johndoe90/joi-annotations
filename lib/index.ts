@@ -16,34 +16,37 @@ import {SchemaBuilder} from './schemabuilder';
 import {AlternativesAnnotations} from './alternatives';
 
 let validate = Joi.validate;
-Joi.validate = function(value, schema, options, callback) {
-    let prototype;
-    if ( value && typeof value == 'object' && !schema )
-        prototype = Object.getPrototypeOf(value);
+Joi.validate = function(...args) {
+    if ( args[0] && typeof args[0] === 'object' ) {
+        let prototype;
 
-    if ( prototype && Meta.hasMetadata(prototype) )
-        schema = SchemaBuilder.build(prototype);
+        if ( args.length === 1 || !args[1] ) {
+            prototype = Object.getPrototypeOf(args[0]);
 
-    let rest = [];
-    if ( options ) rest.push(options);
-    if ( callback ) rest.push(callback);
-
-    return validate(value, schema, ...rest);
-};
+            if ( prototype && Meta.hasMetadata(prototype) ) 
+                args[1] = SchemaBuilder.build(prototype);
+        } else if ( typeof args[1] === 'function' && Meta.hasMetadata(args[1].prototype) )
+            args[1] = SchemaBuilder.build(args[1].prototype);
+    } 
+    
+    return validate(...args);
+}
 
 let assert = Joi.assert;
-Joi.assert = function(value, schema, message) {
-    let prototype;
-    if ( value && typeof value == 'object' && !schema )
-        prototype = Object.getPrototypeOf(value);
+Joi.assert = function(...args) {
+    if ( args[0] && typeof args[0] === 'object' ) {
+        let prototype;
 
-    if ( prototype && Meta.hasMetadata(prototype) ) 
-        schema = SchemaBuilder.build(prototype);
+        if ( args.length === 1 || !args[1] ) {
+            prototype = Object.getPrototypeOf(args[0]);
 
-    let rest = [];
-    if ( message ) rest.push(message);
+            if ( prototype && Meta.hasMetadata(prototype) ) 
+                args[1] = SchemaBuilder.build(prototype);
+        } else if ( typeof args[1] === 'function' && Meta.hasMetadata(args[1].prototype) )
+            args[1] = SchemaBuilder.build(args[1].prototype);
+    }
 
-    return assert(value, schema, ...rest);
+    return assert(...args);
 };
 
 let any = new AnyAnnotations(),
@@ -72,43 +75,3 @@ export var annotations = {
     alt: alternatives,
     alternatives: alternatives
 };
-
-class Phone {
-}
-
-class Person {
-    @annotations.object.validate(Phone)
-    public phone: Phone;
-}
-
-var phone = new Phone();
-
-var person = new Person();
-person.phone = phone;
-
-console.log(Joi.validate(person));
-
-/*class Test {
-    public test: string;
-}
-
-class Node {
-    @annotations.string.required()
-    public name: string;
-
-    // schema has isJoi, test if i can use it
-
-    //need to make something like this
-    //@annotation.object.resource(Test)
-    //only pass prototype to schemaBuilder.build because I only need the prototype
-    @annotations.object.validate()
-    public next: Test;
-}
-
-
-
-let node1 = new Node();
-node1.name = 'node1';
-//node1.next = new Test();
-
-console.log(Joi.validate(node1));*/

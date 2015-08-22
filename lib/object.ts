@@ -154,7 +154,8 @@ export class ObjectAnnotations extends AnyAnnotations {
 
     public validate(type) {
         return Meta.addMetadata({
-            type: 'resource',
+            priority: 3,
+            type: this._type,
             validatorName: 'resource',
             validatorParameters: [type.prototype]
         });

@@ -3,6 +3,7 @@
 import {Meta} from './meta';
 import {params} from './util';
 import {AnyAnnotations} from './any';
+import {SchemaBuilder} from './schemabuilder';
 
 export interface IArrayAnnotations {
 	unique();
