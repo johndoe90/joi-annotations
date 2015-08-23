@@ -1,19 +1,8 @@
 ///<reference path="references.ts" />
 
+import * as Joi from 'joi';
 import {Meta} from './meta';
 import {AnyAnnotations} from './any';
-
-export interface INumberAnnotations {
-	integer();
-	positive();
-	negative();
-	min(limit: number);
-	max(limit: number);
-	less(limit: number);
-	multiple(base: number);
-	greater(limit: number);
-	precision(limit: number);
-}
 
 export class NumberAnnotations extends AnyAnnotations {
 	public _type: string = 'number';
@@ -24,7 +13,7 @@ export class NumberAnnotations extends AnyAnnotations {
         });
     }
 
-    public min(limit: number) {
+    public min(limit: number|Joi.Reference) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'min',
@@ -32,7 +21,7 @@ export class NumberAnnotations extends AnyAnnotations {
         });
     }
 
-    public max(limit: number) {
+    public max(limit: number|Joi.Reference) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'max',
@@ -40,7 +29,7 @@ export class NumberAnnotations extends AnyAnnotations {
         });
     }
 
-    public greater(limit: number) {
+    public greater(limit: number|Joi.Reference) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'greater',
@@ -48,7 +37,7 @@ export class NumberAnnotations extends AnyAnnotations {
         });
     }
 
-    public less(limit: number) {
+    public less(limit: number|Joi.Reference) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'less',

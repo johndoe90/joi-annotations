@@ -86,17 +86,15 @@ export class Meta {
     }
 
     private static addPropertyMetadata(target: {}, property: string, type: string, priority: number, validatorName: string, validatorParameters: any[]) {
-        //check if the target already has metadata, if not create it
         let metadata = Meta.getOrCreateMetadata(Meta.METADATA, target);
 
-        // make sure that the target metadata has an entry for the current property
         if ( !metadata.hasOwnProperty(property) ) 
             metadata[property] = { schema: [] };
         
-        // add the actual metadata info which is processed later on
-        metadata[property].type = type;
+        if ( type && ( !metadata[property].type || metadata[property].type === 'any') )
+            metadata[property].type = type;
 
-        if ( priority && validatorName ) {
+        if ( validatorName ) {
             metadata[property].schema.push({
                 priority: priority,
                 name: validatorName,

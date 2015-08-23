@@ -3,40 +3,61 @@
 import * as Joi from 'joi';
 import {annotations} from './index';
 
-/*@annotations.object.and('propA', 'propB')
-class Resource {
+@annotations.object.and('type', 'serialNumber')
+class Engine {
 	@annotations.string.string()
-	public propA: string;
+	public type: string;
 
-	@annotations.string.string()
-	public propB: string;
+	@annotations.number.number()
+	public serialNumber: number;
 }
 
-class CompositionTest {
-	@annotations.object.validate()
-	public resource: Resource;
+class Car {
+  @annotations.object.required()
+	@annotations.object.validate(Engine)
+	public engine: Engine;
 }
 
-let test, error;
-describe("annotation", function() {
-    describe("validate", function() {
-       it("should validate composed object", function() {
-           test = new CompositionTest();
-           test.resource = new Resource();
-           test.resource.propA = 'abc';
-           test.resource.propB = 'def';
+describe('car', () => {
+  beforeEach(() => {
+    let engine = new Engine();
+    engine.type = 'boxer';
+    engine.serialNumber = 1234;
 
-           error = Joi.validate(test).error;
+    let car = new Car();
+    car.engine = engine;
 
-           expect(error).toBeNull();
+    this.error = null;
+    this.test = car;
+  });
 
-           test = new CompositionTest();
-           test.resource = new Resource();
-           test.resource.propA = 'abc';
+  it('should be valid', () => {
+    this.error = Joi.validate(this.test).error;
 
-           error = Joi.validate(test).error;
+    expect(this.error).toBeNull();
+  });
 
-           expect(error).not.toBeNull();
-       });
-    });
-});*/
+  it('should not be valid (serialnumber missing)', () => {
+    delete this.test.engine.serialNumber;
+
+    this.error = Joi.validate(this.test).error;
+
+    expect(this.error).not.toBeNull();
+  });
+
+  it('should not be valid (serialnumber is of wrong type)', () => {
+    this.test.engine.serialNumber = 'A341';
+
+    this.error = Joi.validate(this.test).error;
+
+    expect(this.error).not.toBeNull();
+  });
+
+  it('should not be valid (engine is missing)', () => {
+    delete this.test.engine;
+
+    this.error = Joi.validate(this.test).error;
+
+    expect(this.error).not.toBeNull();
+  });
+})

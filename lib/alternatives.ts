@@ -1,5 +1,6 @@
 ///<reference path="references.ts" />
 
+import * as Joi from 'joi';
 import {Meta} from './meta';
 import {params} from './util';
 import {AnyAnnotations} from './any';
@@ -27,7 +28,7 @@ export class AlternativesAnnotations extends AnyAnnotations {
 		});
 	}
 
-	public when(ref: string|any, options?: {is: any, then: any, otherwise: any}) {
+	public when(ref: string|Joi.Reference, options?: Joi.WhenOptions) {
 		return Meta.addMetadata({
 			type: this._type,
 			validatorName: 'when',

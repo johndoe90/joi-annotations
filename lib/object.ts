@@ -2,10 +2,6 @@ import {Meta} from './meta';
 import {params} from './util';
 import {AnyAnnotations} from './any';
 
-export interface IObjectAnnotations {
-
-}
-
 export class ObjectAnnotations extends AnyAnnotations {
 	public _type: string = 'object';
 

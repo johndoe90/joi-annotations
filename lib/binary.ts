@@ -1,15 +1,7 @@
 import {Meta} from './meta';
 import {AnyAnnotations} from './any';
-import {IAnyAnnotations} from './any';
 
-export interface IBinaryAnnotations extends IAnyAnnotations {
-	min(limit: number);
-	max(limit: number);
-	length(limit: number);
-	encoding(encoding: string);
-}
-
-export class BinaryAnnotations extends AnyAnnotations implements IBinaryAnnotations {
+export class BinaryAnnotations extends AnyAnnotations {
 	protected _type: string = 'binary';
 
 	public binary() {

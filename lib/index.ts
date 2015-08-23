@@ -15,25 +15,7 @@ import {BooleanAnnotations} from './boolean';
 import {SchemaBuilder} from './schemabuilder';
 import {AlternativesAnnotations} from './alternatives';
 
-let validate = Joi.validate;
-Joi.validate = function(...args) {
-    if ( args[0] && typeof args[0] === 'object' ) {
-        let prototype;
-
-        if ( args.length === 1 || !args[1] ) {
-            prototype = Object.getPrototypeOf(args[0]);
-
-            if ( prototype && Meta.hasMetadata(prototype) ) 
-                args[1] = SchemaBuilder.build(prototype);
-        } else if ( typeof args[1] === 'function' && Meta.hasMetadata(args[1].prototype) )
-            args[1] = SchemaBuilder.build(args[1].prototype);
-    } 
-    
-    return validate(...args);
-}
-
-let assert = Joi.assert;
-Joi.assert = function(...args) {
+function processArguments(args) {
     if ( args[0] && typeof args[0] === 'object' ) {
         let prototype;
 
@@ -46,32 +28,38 @@ Joi.assert = function(...args) {
             args[1] = SchemaBuilder.build(args[1].prototype);
     }
 
+    return args;
+}
+
+let validate = Joi.validate;
+Joi.validate = function(...args) {
+    args = processArguments(args);
+    
+    return validate(...args);
+}
+
+let assert = Joi.assert;
+Joi.assert = function(...args) {
+    args = processArguments(args);
+
     return assert(...args);
 };
 
-let any = new AnyAnnotations(),
-    date = new DateAnnotations(),
-    func = new FuncAnnotations(),
-    array = new ArrayAnnotations(),
-    object = new ObjectAnnotations(),
-    string = new StringAnnotations(),
-    number = new NumberAnnotations(),
-    binary = new BinaryAnnotations(),
-    boolean = new BooleanAnnotations(),
-    alternatives = new AlternativesAnnotations();
+let boolean = new BooleanAnnotations();
+let alt = new AlternativesAnnotations();
 
 export var annotations = {
     ref: ref,
-    any: any,
-    func: func,
-    date: date,
-    array: array,
+    alt: alt,
     bool: boolean,
-    object: object,
-    string: string,
-    number: number,
-    binary: binary,
     boolean: boolean,
-    alt: alternatives,
-    alternatives: alternatives
+    alternatives: alt,
+    any: new AnyAnnotations(),
+    func: new FuncAnnotations(),
+    date: new DateAnnotations(),
+    array: new ArrayAnnotations(),
+    object: new ObjectAnnotations(),
+    string: new StringAnnotations(),
+    number: new NumberAnnotations(),
+    binary: new BinaryAnnotations(),
 };

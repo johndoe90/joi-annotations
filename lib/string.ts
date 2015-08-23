@@ -1,22 +1,9 @@
 ///<reference path="references.ts" />
 
+import * as Joi from 'joi';
 import {Meta} from './meta';
 import {params} from './util';
 import {AnyAnnotations} from './any';
-
-export interface IStringAnnotations {
-	token();
-	alphanum();
-	creditCard();
-	insensitive();
-	regex(pattern: RegExp, name?: string);
-	min(value: number, encoding?: string);
-	max(value: number, encoding?: string);
-	length(limit: number, encoding?: string);
-	replace(pattern: RegExp, replacement?: string);
-	ip(options?: {version?: string, cidr?: string});
-	email(options?: {errorLevel?: number, tldWhitelist?: string[], minDomainAtoms?: number});
-}
 
 export class StringAnnotations extends AnyAnnotations {
 	public _type: string = 'string';
@@ -34,7 +21,7 @@ export class StringAnnotations extends AnyAnnotations {
         });
     }
 
-    public min(value: number, encoding?: string): any {
+    public min(value: number|Joi.Reference, encoding?: string): any {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'min',
@@ -42,7 +29,7 @@ export class StringAnnotations extends AnyAnnotations {
         });
     }
 
-    public max(value:number, encoding?: string) {
+    public max(value: number|Joi.Reference, encoding?: string) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'max',
@@ -57,7 +44,7 @@ export class StringAnnotations extends AnyAnnotations {
         });
     }
 
-    public length(limit: number, encoding?: string) {
+    public length(limit: number|Joi.Reference, encoding?: string) {
         return Meta.addMetadata({
             type: this._type,
             validatorName: 'length',

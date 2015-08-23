@@ -1,10 +1,7 @@
 import {Meta} from './meta';
 import {AnyAnnotations} from './any';
-import {IAnyAnnotations} from './any';
 
-export interface IBooleanAnnotations extends IAnyAnnotations {}
-
-export class BooleanAnnotations extends AnyAnnotations implements IBooleanAnnotations {
+export class BooleanAnnotations extends AnyAnnotations {
 	protected _type: string = 'boolean';
 
 	public bool() {

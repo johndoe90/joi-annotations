@@ -1,32 +1,10 @@
 ///<reference path="references.ts" />
 
+import * as Joi from 'joi';
 import {Meta} from './meta';
+import {params} from './util';
 
-export interface IAnyAnnotations {	
-	strip();
-	required();
-	optional();
-	forbidden();
-	meta(meta: {});	
-	allow(value: any);
-	unit(name: string);
-	example(value: any);
-	label(name: string);
-	raw(isRaw: boolean);
-	options(options: {});
-	description(desc: string);
-	strict(isStrict: boolean);
-	tags(tags: string|string[]);
-    not(...value: (any|any[])[]);
-	notes(notes: string|string[]);
-    only(...value: (any|any[])[]);
-    valid(...value: (any|any[])[]);
-    equal(...value: (any|any[])[]);
-    invalid(...value: (any|any[])[]);
-    disallow(...value: (any|any[])[]); 
-}
-
-export class AnyAnnotations implements IAnyAnnotations {
+export class AnyAnnotations {
 	protected _type: string = 'any';
 
     public any() {
@@ -181,5 +159,29 @@ export class AnyAnnotations implements IAnyAnnotations {
 
     public not(...value: any[]) {
         return this.invalid(value);
+    }
+
+    public empty(schema: any) {
+        return Meta.addMetadata({
+            type: this._type,
+            validatorName: 'empty',
+            validatorParameters: [schema]
+        });
+    }
+
+    public when(ref: string|Joi.Reference, options: Joi.WhenOptions) {
+        return Meta.addMetadata({
+            type: this._type,
+            validatorName: 'when',
+            validatorParameters: [ref, options]
+        });
+    }
+
+    public default(value?: any, description?: string) {
+        return Meta.addMetadata({
+            type: this._type,
+            validatorName: 'default',
+            validatorParameters: params(value, description)
+        });
     }
 }

@@ -4,14 +4,7 @@ import * as Joi from 'joi';
 import {Meta} from './meta';
 import {AnyAnnotations} from './any';
 
-export interface IDateAnnotations {
-	iso();
-	min(date: Date|string|Joi.Reference);
-	max(date: Date|string|Joi.Reference);
-	format(format: string|string[]);
-}
-
-export class DateAnnotations extends AnyAnnotations implements IDateAnnotations {
+export class DateAnnotations extends AnyAnnotations {
 	protected _type: string = 'date';
 
 	public date() {
