@@ -21,7 +21,7 @@ class Person {
 	public lastname: string;
 
 	@annotations.object.required()
-	@annotations.object.validate(Address)
+	@annotations.object.valid(Address)
 	public address: Address;
 }
 

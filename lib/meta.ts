@@ -116,7 +116,7 @@ export class Meta {
         options.priority = options.priority || 1;
         options.validatorParameters = options.validatorParameters || [];
 
-        return function(target, property) {
+        return function(target, property?) {
             if ( typeof target == 'object' )
                 Meta.addPropertyMetadata(target, property, options.type, options.priority, options.validatorName, options.validatorParameters);
             else if ( typeof target == 'function' ) 

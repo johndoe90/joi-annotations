@@ -1,3 +1,4 @@
+import * as Joi from 'joi';
 import {Meta} from './meta';
 import {params} from './util';
 import {AnyAnnotations} from './any';
@@ -44,7 +45,7 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-	public pattern(pattern: RegExp, name?: string) {
+	public pattern(pattern: RegExp, name?: Joi.Schema) {
 		return Meta.addMetadata({
             type: this._type,
             validatorName: 'pattern',
@@ -100,7 +101,7 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-	public rename(from: string, to: string, options?: { alias?: boolean, multiple?: boolean, override?: boolean, ignoreUndefined?: boolean}) {
+	public rename(from: string, to: string, options?: Joi.RenameOptions) {
 		return Meta.addMetadata({
             type: this._type,
             validatorName: 'rename',
@@ -108,11 +109,11 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-	public assert(key: string, schema: any, message?: string) {
+	public assert(ref: string|Joi.Reference, schema: any, message?: string) {
 		return Meta.addMetadata({
             type: this._type,
             validatorName: 'assert',
-            validatorParameters: params(key, schema, message)
+            validatorParameters: params(ref, schema, message)
         });
 	}
 
@@ -124,7 +125,7 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-	public type(constructor: () => any, name?: string) {
+	public type(constructor: Function, name?: string) {
 		return Meta.addMetadata({
             type: this._type,
             validatorName: 'type',
@@ -148,12 +149,16 @@ export class ObjectAnnotations extends AnyAnnotations {
         });
 	}
 
-    public validate(type) {
-        return Meta.addMetadata({
-            priority: 3,
-            type: this._type,
-            validatorName: 'resource',
-            validatorParameters: [type.prototype]
-        });
+    public valid(...values: any[]) {
+        if ( values.length === 1 && typeof values[0] === 'function' && Meta.hasMetadata(values[0].prototype) ) {
+            return Meta.addMetadata({
+                priority: 3,
+                type: this._type,
+                validatorName: 'resource',
+                validatorParameters: [values[0].prototype]
+            });
+        } else {
+            return super.valid(values);
+        }
     }
 }

@@ -14,7 +14,7 @@ class Engine {
 
 class Car {
   @annotations.object.required()
-	@annotations.object.validate(Engine)
+	@annotations.object.valid(Engine)
 	public engine: Engine;
 }
 

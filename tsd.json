@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "joi/joi.d.ts": {
-      "commit": "304a25197990aeabf8e9fd030ad927ed011b9e83"
+      "commit": "d9fea91e842c2cf5bd0f7d861ac378e571d2ad7c"
     },
     "requirejs/require.d.ts": {
       "commit": "304a25197990aeabf8e9fd030ad927ed011b9e83"
